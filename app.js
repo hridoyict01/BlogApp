@@ -74,7 +74,6 @@ app.get("/blogs/:id", (req,res) =>{
         if(err) {
             res.redirect("/blogs");
         } else {
-            console.log(blog);
             res.render("show",{blog});
         }
     });
@@ -102,7 +101,17 @@ app.put("/blogs/:id", (req,res) =>{
         }
     });
 });
-
+//Delete route
+app.delete("/blogs/:id",(req,res) =>{
+    var id = req.params.id;
+    Blog.findByIdAndRemove(id,(err) =>{
+        if(err) {
+            console.log(err);
+        } else {
+            res.redirect("/blogs");
+        }
+    })
+});
 
 //connection with node server
 app.listen(3000, () => {
