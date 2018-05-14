@@ -44,6 +44,25 @@ app.get("/blogs", (req,res) =>{
     });
     
 });
+//New route..it will show a form
+app.get("/blogs/new",(req,res) =>{
+    res.render("new");
+});
+//create rout e
+app.post("/blogs", (req,res) =>{
+    //create blog
+    blog = req.body.blog;
+    Blog.create(blog, (err,newblog) =>{
+       if(err){
+           res.render("new");
+       } 
+       else{
+//redirect to index
+        res.redirect("/blogs");
+       }
+    });
+    
+});
 
 
 //connection with node server
