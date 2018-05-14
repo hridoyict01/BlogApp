@@ -64,6 +64,21 @@ app.post("/blogs", (req,res) =>{
     
 });
 
+//show route /blogs/:id
+
+app.get("/blogs/:id", (req,res) =>{
+    var id = req.params.id;
+    console.log(id);
+    Blog.findById(id, (err, blog) =>{
+        if(err) {
+            res.redirect("/blogs");
+        } else {
+            console.log(blog);
+            res.render("show",{blog});
+        }
+    });
+});
+
 
 //connection with node server
 app.listen(3000, () => {
