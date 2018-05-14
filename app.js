@@ -1,10 +1,12 @@
 var bodyParser = require("body-parser");
+var methodOverride = require("method-override");
 var mongoose = require("mongoose");
 var express = require("express");
 
 var app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -68,13 +70,35 @@ app.post("/blogs", (req,res) =>{
 
 app.get("/blogs/:id", (req,res) =>{
     var id = req.params.id;
-    console.log(id);
     Blog.findById(id, (err, blog) =>{
         if(err) {
             res.redirect("/blogs");
         } else {
             console.log(blog);
             res.render("show",{blog});
+        }
+    });
+});
+
+//edit route blogs/:id/edit
+
+app.get("/blogs/:id/edit", (req,res) =>{
+    Blog.findById(req.params.id,(err, blog) =>{
+        if(err) {
+            res.redirect("/blogs");
+        } else {
+            res.render("edit",{blog});
+        }
+    });
+});
+
+//Update route 
+app.put("/blogs/:id", (req,res) =>{
+    Blog.findByIdAndUpdate(req.params.id,req.body.blog, (err,blog) => {
+        if(err) {
+            res.redirect("/blogs");
+        } else {
+            res.redirect("/blogs/"+req.params.id);
         }
     });
 });
